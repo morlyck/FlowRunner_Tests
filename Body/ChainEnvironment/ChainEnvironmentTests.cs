@@ -191,6 +191,110 @@ namespace FlowRunner.Engine.Tests
 
         #endregion
 
+        #region(CreateOrSetValue_Local)
+        //現階層が大域環境で、すでに変数の定義がある場合
+        [TestMethod()]
+        public void CreateOrSetValue_LocalTest() {
+            frEnvironment environment = new frEnvironment();
+
+            FloorDataFrame currentFloor = environment.GetField<FloorDataFrame>("currentFloor");
+            string variableName = "t";
+            string oldValue = "old-value";
+            string newValue = "new-value";
+
+            currentFloor.Variables.Add(variableName, oldValue);
+
+            environment.CreateOrSetValue_Local(variableName, newValue);
+
+            Assert.AreEqual(newValue, currentFloor.Variables[variableName]);
+        }
+
+        //現階層が非大域環境で、現階層にすでに変数の定義がある場合
+        [TestMethod()]
+        public void CreateOrSetValue_LocalTest1() {
+            frEnvironment environment = new frEnvironment();
+
+            List<FloorDataFrame> floorDataFrames = environment.GetField<List<FloorDataFrame>>("floorDataFrames");
+            var currentFloor = new FloorDataFrame();
+            floorDataFrames.Add(currentFloor);
+            environment.SetField("currentFloorNo", 1);
+            environment.SetField("currentFloor", currentFloor);
+
+            string variableName = "t";
+            string oldValue = "old-value";
+            string newValue = "new-value";
+
+            currentFloor.Variables.Add(variableName, oldValue);
+
+            environment.CreateOrSetValue_Local(variableName, newValue);
+
+            Assert.AreEqual(newValue, currentFloor.Variables[variableName]);
+        }
+        //現階層が大域環境で、変数の定義がない場合
+        [TestMethod()]
+        public void CreateOrSetValue_LocalTest2() {
+            frEnvironment environment = new frEnvironment();
+
+            FloorDataFrame currentFloor = environment.GetField<FloorDataFrame>("currentFloor");
+            string variableName = "t";
+            string value = "t-value";
+
+            environment.CreateOrSetValue_Local(variableName, value);
+
+            Assert.AreEqual(value, currentFloor.Variables[variableName]);
+        }
+        //現階層が非大域環境で、現階層から大域環境まで含めて変数の定義がない場合
+        [TestMethod()]
+        public void CreateOrSetValue_LocalTest3() {
+            frEnvironment environment = new frEnvironment();
+
+            List<FloorDataFrame> floorDataFrames = environment.GetField<List<FloorDataFrame>>("floorDataFrames");
+            var floorAbove = floorDataFrames[0];
+            var currentFloor = new FloorDataFrame();
+            floorDataFrames.Add(currentFloor);
+            environment.SetField("currentFloorNo", 1);
+            environment.SetField("currentFloor", currentFloor);
+
+            string variableName = "t";
+            string value = "t-value";
+
+            environment.CreateOrSetValue_Local(variableName, value);
+
+            Assert.AreEqual(value, currentFloor.Variables[variableName]);
+            Assert.AreEqual(false, floorAbove.Variables.ContainsKey(variableName));
+        }
+        //大域環境に定義あり、第一層に定義あり、第二層が現階層で定義なしの場合
+        [TestMethod()]
+        public void CreateOrSetValue_LocalTest4() {
+            frEnvironment environment = new frEnvironment();
+
+            List<FloorDataFrame> floorDataFrames = environment.GetField<List<FloorDataFrame>>("floorDataFrames");
+            floorDataFrames.Add(new FloorDataFrame());
+            floorDataFrames.Add(new FloorDataFrame());
+            var globalfloor = floorDataFrames[0];
+            var floorAbove = floorDataFrames[1];
+            var currentFloor = floorDataFrames[2];
+            environment.SetField("currentFloorNo", 2);
+            environment.SetField("currentFloor", currentFloor);
+
+            string variableName = "t";
+            string oldValue_0 = "old-value_0";
+            string oldValue_1 = "old-value_1";
+            string newValue = "new-value";
+
+            globalfloor.Variables.Add(variableName, oldValue_0);
+            floorAbove.Variables.Add(variableName, oldValue_1);
+
+            environment.CreateOrSetValue_Local(variableName, newValue);
+
+            Assert.AreEqual(oldValue_0, globalfloor.Variables[variableName]);
+            Assert.AreEqual(oldValue_1, floorAbove.Variables[variableName]);
+            Assert.AreEqual(newValue, currentFloor.Variables[variableName]);
+        }
+
+
+        #endregion
+
         #region(Down)
         [TestMethod()]
         public void DownTest() {
