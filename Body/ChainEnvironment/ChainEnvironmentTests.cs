@@ -328,7 +328,7 @@ namespace FlowRunner.Engine.Tests
             string variableName_1 = "t_1";
             string value = "value";
 
-            currentFloor.Variables.Add(variableName_0, value);
+            floorAbove.Variables.Add(variableName_0, value);
 
             Assert.AreEqual(true, environment.ExistsValue(variableName_0));
             Assert.AreEqual(false, environment.ExistsValue(variableName_1));
