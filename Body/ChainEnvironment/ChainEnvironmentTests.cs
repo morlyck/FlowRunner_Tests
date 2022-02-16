@@ -295,6 +295,46 @@ namespace FlowRunner.Engine.Tests
 
         #endregion
 
+        #region(ExistsValue)
+        //現階層が大域環境の場合
+        [TestMethod()]
+        public void ExistsValueTest() {
+            frEnvironment environment = new frEnvironment();
+
+            FloorDataFrame currentFloor = environment.GetField<FloorDataFrame>("currentFloor");
+            string variableName_0 = "t_0";
+            string variableName_1 = "t_1";
+            string value = "value";
+
+            currentFloor.Variables.Add(variableName_0, value);
+
+            Assert.AreEqual(true, environment.ExistsValue(variableName_0));
+            Assert.AreEqual(false, environment.ExistsValue(variableName_1));
+        }
+
+        //現階層が非大域環境の場合
+        [TestMethod()]
+        public void ExistsValueTest1() {
+            frEnvironment environment = new frEnvironment();
+
+            List<FloorDataFrame> floorDataFrames = environment.GetField<List<FloorDataFrame>>("floorDataFrames");
+            var floorAbove = floorDataFrames[0];
+            var currentFloor = new FloorDataFrame();
+            floorDataFrames.Add(currentFloor);
+            environment.SetField("currentFloorNo", 1);
+            environment.SetField("currentFloor", currentFloor);
+
+            string variableName_0 = "t_0";
+            string variableName_1 = "t_1";
+            string value = "value";
+
+            currentFloor.Variables.Add(variableName_0, value);
+
+            Assert.AreEqual(true, environment.ExistsValue(variableName_0));
+            Assert.AreEqual(false, environment.ExistsValue(variableName_1));
+        }
+        #endregion
+
         #region(Down)
         [TestMethod()]
         public void DownTest() {
