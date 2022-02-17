@@ -110,11 +110,67 @@ namespace FlowRunner.Engine.Tests
         }
         #endregion
 
-        #region(ShotRunTest)
-        //jump命令
+        #region(ShotRunTest ビルドインコマンド)
+        //nop命令
         //PackCodeの指定の省略形式
         [TestMethod()]
         public void ShotRunTest() {
+            RunningContext context = new RunningContext();
+            LabelRun labelRun = new LabelRun();
+            LabelRunOrdertaker ordertaker = new LabelRunOrdertaker();
+            labelRun.LabelRunOrdertaker = ordertaker;
+            ordertaker.catchException_LabelResolutionMiss = (context, packCode) => true;
+            string packCode = "t";
+            int expected1 = 1;
+            int expected2 = 2;
+
+            context.Statements = new Statement[] {
+                new StatementDummy("nop"),
+                new StatementDummy("nop"),
+                new StatementDummy("nop")
+            };
+
+            context.CurrentPackCode = packCode;
+            context.IsHalting = false;
+
+            labelRun.ShotRun(context);
+            Assert.AreEqual(expected1, context.ProgramCounter);
+
+            labelRun.ShotRun(context);
+            Assert.AreEqual(expected2, context.ProgramCounter);
+        }
+        //halt命令
+        //PackCodeの指定の省略形式
+        [TestMethod()]
+        public void ShotRunTest1() {
+            RunningContext context = new RunningContext();
+            LabelRun labelRun = new LabelRun();
+            LabelRunOrdertaker ordertaker = new LabelRunOrdertaker();
+            labelRun.LabelRunOrdertaker = ordertaker;
+            ordertaker.catchException_LabelResolutionMiss = (context, packCode) => true;
+            string packCode = "t";
+            int expected1 = 1;
+            int expected2 = 1;
+
+            context.Statements = new Statement[] {
+                new StatementDummy("halt"),
+                new StatementDummy("nop"),
+                new StatementDummy("nop")
+            };
+
+            context.CurrentPackCode = packCode;
+            context.IsHalting = false;
+
+            labelRun.ShotRun(context);
+            Assert.AreEqual(expected1, context.ProgramCounter);
+
+            labelRun.ShotRun(context);
+            Assert.AreEqual(expected2, context.ProgramCounter);
+        }
+        //jump命令
+        //PackCodeの指定の省略形式
+        [TestMethod()]
+        public void ShotRunTest2() {
             RunningContext context = new RunningContext();
             LabelRun labelRun = new LabelRun();
             LabelRunOrdertaker ordertaker = new LabelRunOrdertaker();
@@ -166,8 +222,10 @@ namespace FlowRunner.Engine.Tests
             throw new NotImplementedException();
         }
 
+        public Func<IRunningContext, LabelResolutionMissException, bool> catchException_LabelResolutionMiss = null;
         public bool CatchException_LabelResolutionMiss(IRunningContext runningContext, LabelResolutionMissException e) {
-            throw new NotImplementedException();
+            if (catchException_LabelResolutionMiss == null) return false;
+            return catchException_LabelResolutionMiss(runningContext, e);
         }
 
         public bool CatchException_ProgramCounterOutOfRange(IRunningContext runningContext, ProgramCounterOutOfRangeException e) {
