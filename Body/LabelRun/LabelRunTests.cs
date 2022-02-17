@@ -110,7 +110,35 @@ namespace FlowRunner.Engine.Tests
         }
         #endregion
 
-        #region()
+        #region(ShotRunTest)
+        //jump命令
+        //PackCodeの指定の省略形式
+        [TestMethod()]
+        public void ShotRunTest() {
+            RunningContext context = new RunningContext();
+            LabelRun labelRun = new LabelRun();
+            LabelRunOrdertaker ordertaker = new LabelRunOrdertaker();
+            labelRun.LabelRunOrdertaker = ordertaker;
+            ordertaker.catchException_LabelResolutionMiss = (context, packCode) => true;
+            string label = "jump_point";
+            int label_PCValue = 2;
+            string packCode = "t";
+            int expected = 2;
+
+            context.Labels.Add(label, label_PCValue);
+            context.Statements = new Statement[] {
+                new StatementDummy("jump", "", label),
+                new StatementDummy("nop"),
+                new StatementDummy("nop")
+            };
+
+            context.CurrentPackCode = packCode;
+            context.IsHalting = false;
+
+            labelRun.ShotRun(context);
+
+            Assert.AreEqual(expected, context.ProgramCounter);
+        }
         #endregion
 
         #region()
@@ -128,8 +156,10 @@ namespace FlowRunner.Engine.Tests
             throw new NotImplementedException();
         }
 
+        public Func<IRunningContext, string, CommandExecutionContext, bool>? executionExpansionCommand = null;
         public bool ExecutionExpansionCommand(IRunningContext runningContext, string commandSymbol, CommandExecutionContext commandExecutionContext) {
-            throw new NotImplementedException();
+            if (executionExpansionCommand == null) return false;
+            return executionExpansionCommand(runningContext, commandSymbol, commandExecutionContext);
         }
 
         public bool CatchException_InvalidCommand(IRunningContext runningContext, InvalidCommandException e) {
@@ -142,6 +172,18 @@ namespace FlowRunner.Engine.Tests
 
         public bool CatchException_ProgramCounterOutOfRange(IRunningContext runningContext, ProgramCounterOutOfRangeException e) {
             throw new NotImplementedException();
+        }
+
+    }
+
+    public class StatementDummy : Statement
+    {
+        public StatementDummy(string CommandSymbol, string PackCode = "", string Label = "", bool ArgumentEvaluationExpansionMode = false, string ArgumentText = "") {
+            this.CommandSymbol = CommandSymbol;
+            this.PackCode = PackCode;
+            this.Label = Label;
+            this.ArgumentEvaluationExpansionMode = ArgumentEvaluationExpansionMode;
+            this.ArgumentText = ArgumentText;
         }
 
     }
