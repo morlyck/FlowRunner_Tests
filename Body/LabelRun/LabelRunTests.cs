@@ -195,6 +195,36 @@ namespace FlowRunner.Engine.Tests
 
             Assert.AreEqual(expected, context.ProgramCounter);
         }
+        //call命令
+        //PackCodeの指定の省略形式
+        [TestMethod()]
+        public void ShotRunTest3() {
+            RunningContext context = new RunningContext();
+            LabelRun labelRun = new LabelRun();
+            LabelRunOrdertaker ordertaker = new LabelRunOrdertaker();
+            labelRun.LabelRunOrdertaker = ordertaker;
+            ordertaker.catchException_LabelResolutionMiss = (context, packCode) => true;
+            string label = "call_point";
+            int label_PCValue = 2;
+            string packCode = "t";
+            int expected = 2;
+            int expected_Stack = 0;
+
+            context.Labels.Add(label, label_PCValue);
+            context.Statements = new Statement[] {
+                new StatementDummy("call", "", label),
+                new StatementDummy("nop"),
+                new StatementDummy("nop")
+            };
+
+            context.CurrentPackCode = packCode;
+            context.IsHalting = false;
+
+            labelRun.ShotRun(context);
+
+            Assert.AreEqual(expected, context.ProgramCounter);
+            Assert.AreEqual(expected_Stack, context.CallStack.Peek().ProgramCounter);
+        }
         #endregion
 
         #region()
