@@ -225,6 +225,36 @@ namespace FlowRunner.Engine.Tests
             Assert.AreEqual(expected, context.ProgramCounter);
             Assert.AreEqual(expected_Stack, context.CallStack.Peek().ProgramCounter);
         }
+        //return命令
+        [TestMethod()]
+        public void ShotRunTest4() {
+            RunningContext context = new RunningContext();
+            LabelRun labelRun = new LabelRun();
+            LabelRunOrdertaker ordertaker = new LabelRunOrdertaker();
+            labelRun.LabelRunOrdertaker = ordertaker;
+            ordertaker.catchException_LabelResolutionMiss = (context, packCode) => true;
+            string label = "return_point";
+            int label_PCValue = 2;
+            string packCode = "t";
+            int expected = 1;
+
+            context.Labels.Add(label, label_PCValue);
+            context.Statements = new Statement[] {
+                new StatementDummy("call", "", label),
+                new StatementDummy("nop"),
+                new StatementDummy("return")
+            };
+
+            context.CurrentPackCode = packCode;
+            context.IsHalting = false;
+
+            //call
+            labelRun.ShotRun(context);
+            //return
+            labelRun.ShotRun(context);
+
+            Assert.AreEqual(expected, context.ProgramCounter);
+        }
         #endregion
 
         #region()
