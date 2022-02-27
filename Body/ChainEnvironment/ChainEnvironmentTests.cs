@@ -87,14 +87,14 @@ namespace FlowRunner.Engine.Tests
         //同階層に定義のある変数の値を取得しようとしたとき
         [TestMethod()]
         public void GetValueTest4() {
-            frEnvironment UpstairEnvironment = new frEnvironment();
+            frEnvironment upstairEnvironment = new frEnvironment();
 
-            FloorDataFrame currentFloor = UpstairEnvironment.GetField<FloorDataFrame>("currentFloor");
+            FloorDataFrame currentFloor = upstairEnvironment.GetField<FloorDataFrame>("currentFloor");
             string variableName = "t";
             string value = "t-value";
 
             frEnvironment environment = new frEnvironment();
-            environment.SetUpstairEnvironment_LooseConnection(UpstairEnvironment);
+            environment.SetUpstairEnvironment_LooseConnection(upstairEnvironment);
 
             currentFloor.Variables.Add(variableName, value);
 
