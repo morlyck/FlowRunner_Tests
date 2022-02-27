@@ -83,6 +83,24 @@ namespace FlowRunner.Engine.Tests
                 environment.GetValue(variableName);
             });
         }
+        //チェーン
+        //同階層に定義のある変数の値を取得しようとしたとき
+        [TestMethod()]
+        public void GetValueTest4() {
+            frEnvironment UpstairEnvironment = new frEnvironment();
+
+            FloorDataFrame currentFloor = UpstairEnvironment.GetField<FloorDataFrame>("currentFloor");
+            string variableName = "t";
+            string value = "t-value";
+
+            frEnvironment environment = new frEnvironment();
+            environment.SetUpstairEnvironment_LooseConnection(UpstairEnvironment);
+
+            currentFloor.Variables.Add(variableName, value);
+
+            Assert.AreEqual(value, environment.GetValue(variableName));
+
+        }
         #endregion
 
         #region(SetValue)
