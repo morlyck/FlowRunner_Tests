@@ -203,6 +203,26 @@ namespace FlowRunner.Engine.Tests
             Assert.AreEqual(newValue, floorAbove.Variables[variableName]);
             Assert.AreEqual(false, currentFloor.Variables.ContainsKey(variableName));
         }
+        //現階層が大域環境で、現環境に変数の定義がなくまたチェン先に定義ありの場合
+        [TestMethod()]
+        public void SetValueTest5() {
+            frEnvironment upstairEnvironment = new frEnvironment();
+
+            FloorDataFrame currentFloor = upstairEnvironment.GetField<FloorDataFrame>("currentFloor");
+            string variableName = "t";
+            string oldValue = "old-value";
+            string newValue = "new-value";
+
+            frEnvironment environment = new frEnvironment();
+            environment.SetUpstairEnvironment_LooseConnection(upstairEnvironment);
+
+            //チェン先に変数を追加
+            currentFloor.Variables.Add(variableName, oldValue);
+
+            environment.SetValue(variableName, newValue);
+
+            Assert.AreEqual(newValue, currentFloor.Variables[variableName]);
+        }
 
 
 
