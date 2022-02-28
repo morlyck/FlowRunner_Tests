@@ -255,6 +255,51 @@ namespace FlowRunner.Engine.Tests
 
             Assert.AreEqual(expected, context.ProgramCounter);
         }
+        //int命令
+        [TestMethod()]
+        public void ShotRunTest5() {
+            RunningContext context = new RunningContext();
+            LabelRun labelRun = new LabelRun();
+            LabelRunOrdertaker ordertaker = new LabelRunOrdertaker();
+            labelRun.LabelRunOrdertaker = ordertaker;
+            ordertaker.catchException_LabelResolutionMiss = (context, packCode) => true;
+            string label = "int_point";
+            int label_PCValue = 2;
+            string packCode = "t";
+            int expected = 1;
+            int expected_int = 3;
+            int expected_intReturn = 1;
+
+            context.Labels.Add(label, label_PCValue);
+            context.Statements = new Statement[] {
+                new StatementDummy("int", "", label),
+                new StatementDummy("nop"),
+                new StatementDummy("nop"),//2
+                new StatementDummy("nop"),
+                new StatementDummy("return")
+            };
+
+            context.CurrentPackCode = packCode;
+            context.IsHalting = false;
+
+            //割り込み前
+            labelRun.ShotRun(context);
+
+            Assert.AreEqual(expected, context.ProgramCounter);
+
+            //割り込み中
+            labelRun.ShotRun(context);
+
+            Assert.AreEqual(expected_int, context.ProgramCounter);
+
+            //nop
+            labelRun.ShotRun(context);
+
+            //return
+            labelRun.ShotRun(context);
+
+            Assert.AreEqual(expected_intReturn, context.ProgramCounter);
+        }
         #endregion
 
         #region()
@@ -292,6 +337,9 @@ namespace FlowRunner.Engine.Tests
             throw new NotImplementedException();
         }
 
+        public bool CatchException_CallStackEmptyPop(IRunningContext runningContext, CallStackEmptyPopException e) {
+            throw new NotImplementedException();
+        }
     }
 
     public class StatementDummy : Statement
