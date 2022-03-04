@@ -108,6 +108,26 @@ namespace FlowRunner.Engine.Tests
             Assert.AreEqual(value, environment.GetValue(variableName));
 
         }
+        //チェーン＆マルチバンド
+        //同階層に定義のある変数の値を取得しようとしたとき
+        [TestMethod()]
+        public void GetValueTest4_1() {
+            frEnvironment upstairEnvironment = new frEnvironment();
+            IChainEnvironmentDataHolder upstairdataHolder = upstairEnvironment.GetDataHolder(typeof(string).AssemblyQualifiedName);;
+
+            FloorDataFrame<string> currentFloor = upstairdataHolder.GetField<FloorDataFrame<string>>("currentFloor");
+            string variableName = "t";
+            string value = "t-value";
+
+            frEnvironment environment = new frEnvironment();
+            MultiBandUpstairEnvironment multiBand = new MultiBandUpstairEnvironment(environment);
+            multiBand.UpstairEnvironments.Add(upstairEnvironment);
+
+            currentFloor.Variables.Add(variableName, value);
+
+            Assert.AreEqual(value, environment.GetValue(variableName));
+
+        }
         //int型
         //同階層に定義のある変数の値を取得しようとしたとき
         [TestMethod()]
@@ -277,6 +297,29 @@ namespace FlowRunner.Engine.Tests
 
             frEnvironment environment = new frEnvironment();
             environment.SetUpstairEnvironment_LooseConnection(upstairEnvironment);
+
+            //チェン先に変数を追加
+            currentFloor.Variables.Add(variableName, oldValue);
+
+            environment.SetValue(variableName, newValue);
+
+            Assert.AreEqual(newValue, currentFloor.Variables[variableName]);
+        }
+        //マルチバンド
+        //現階層が大域環境で、現環境に変数の定義がなくまたチェン先に定義ありの場合
+        [TestMethod()]
+        public void SetValueTest5_1() {
+            frEnvironment upstairEnvironment = new frEnvironment();
+            IChainEnvironmentDataHolder upstairdataHolder = upstairEnvironment.GetDataHolder(typeof(string).AssemblyQualifiedName);;
+
+            FloorDataFrame<string> currentFloor = upstairdataHolder.GetField<FloorDataFrame<string>>("currentFloor");
+            string variableName = "t";
+            string oldValue = "old-value";
+            string newValue = "new-value";
+
+            frEnvironment environment = new frEnvironment();
+            MultiBandUpstairEnvironment multiBand = new MultiBandUpstairEnvironment(environment);
+            multiBand.UpstairEnvironments.Add(upstairEnvironment);
 
             //チェン先に変数を追加
             currentFloor.Variables.Add(variableName, oldValue);
@@ -491,6 +534,28 @@ namespace FlowRunner.Engine.Tests
 
             Assert.AreEqual(true, environment.Exists(variableName_0));
             Assert.AreEqual(false, environment.Exists(variableName_1));
+        }
+
+        //チェーン
+        //同階層に定義のある変数の値を取得しようとしたとき
+        [TestMethod()]
+        public void ExistsTest2() {
+            frEnvironment upstairEnvironment = new frEnvironment();
+            IChainEnvironmentDataHolder upstairdataHolder = upstairEnvironment.GetDataHolder(typeof(string).AssemblyQualifiedName); ;
+
+            FloorDataFrame<string> currentFloor = upstairdataHolder.GetField<FloorDataFrame<string>>("currentFloor");
+            string variableName_0 = "t_0";
+            string variableName_1 = "t_1";
+            string value = "value";
+
+            frEnvironment environment = new frEnvironment();
+            environment.SetUpstairEnvironment_LooseConnection(upstairEnvironment);
+
+            currentFloor.Variables.Add(variableName_0, value);
+
+            Assert.AreEqual(true, environment.Exists(variableName_0));
+            Assert.AreEqual(false, environment.Exists(variableName_1));
+
         }
         #endregion
 
