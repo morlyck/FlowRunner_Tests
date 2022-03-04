@@ -26,7 +26,7 @@ namespace FlowRunner.Engine.Tests
         public void GetValueTest() {
             frEnvironment environment = new frEnvironment();
 
-            IChainEnvironmentDataHolder dataHolder = environment.GetField<Dictionary<string, IChainEnvironmentDataHolder>>("dataHolders")[typeof(string).AssemblyQualifiedName];
+            IChainEnvironmentDataHolder dataHolder = environment.GetDataHolder(typeof(string).AssemblyQualifiedName);;
 
             FloorDataFrame<string> currentFloor = dataHolder.GetField<FloorDataFrame<string>>("currentFloor");
             string variableName = "t";
@@ -42,7 +42,7 @@ namespace FlowRunner.Engine.Tests
         [TestMethod()]
         public void GetValueTest1() {
             frEnvironment environment = new frEnvironment();
-            IChainEnvironmentDataHolder dataHolder = environment.GetField<Dictionary<string, IChainEnvironmentDataHolder>>("dataHolders")[typeof(string).AssemblyQualifiedName];
+            IChainEnvironmentDataHolder dataHolder = environment.GetDataHolder(typeof(string).AssemblyQualifiedName);;
 
             List<FloorDataFrame<string>> floorDataFrames = dataHolder.GetField<List<FloorDataFrame<string>>>("floorDataFrames");
             var floorAbove = floorDataFrames[0];
@@ -75,7 +75,7 @@ namespace FlowRunner.Engine.Tests
         [TestMethod()]
         public void GetValueTest3() {
             frEnvironment environment = new frEnvironment();
-            IChainEnvironmentDataHolder dataHolder = environment.GetField<Dictionary<string, IChainEnvironmentDataHolder>>("dataHolders")[typeof(string).AssemblyQualifiedName];
+            IChainEnvironmentDataHolder dataHolder = environment.GetDataHolder(typeof(string).AssemblyQualifiedName);;
 
             List<FloorDataFrame<string>> floorDataFrames = dataHolder.GetField<List<FloorDataFrame<string>>>("floorDataFrames");
             var currentFloor = new FloorDataFrame<string>();
@@ -94,7 +94,7 @@ namespace FlowRunner.Engine.Tests
         [TestMethod()]
         public void GetValueTest4() {
             frEnvironment upstairEnvironment = new frEnvironment();
-            IChainEnvironmentDataHolder upstairdataHolder = upstairEnvironment.GetField<Dictionary<string, IChainEnvironmentDataHolder>>("dataHolders")[typeof(string).AssemblyQualifiedName];
+            IChainEnvironmentDataHolder upstairdataHolder = upstairEnvironment.GetDataHolder(typeof(string).AssemblyQualifiedName);;
 
             FloorDataFrame<string> currentFloor = upstairdataHolder.GetField<FloorDataFrame<string>>("currentFloor");
             string variableName = "t";
@@ -132,7 +132,7 @@ namespace FlowRunner.Engine.Tests
         //int型
         //同階層に定義のある変数の値を取得しようとしたとき
         [TestMethod()]
-        public void GetValueTest56() {
+        public void GetValueTest6() {
             frEnvironment upstairEnvironment = new frEnvironment();
 
             IChainEnvironmentDataHolder upstairdataHolder = upstairEnvironment.GetDataHolder(typeof(Dictionary<string, int>).AssemblyQualifiedName);
@@ -164,7 +164,7 @@ namespace FlowRunner.Engine.Tests
         [TestMethod()]
         public void SetValueTest() {
             frEnvironment environment = new frEnvironment();
-            IChainEnvironmentDataHolder dataHolder = environment.GetField<Dictionary<string, IChainEnvironmentDataHolder>>("dataHolders")[typeof(string).AssemblyQualifiedName];
+            IChainEnvironmentDataHolder dataHolder = environment.GetDataHolder(typeof(string).AssemblyQualifiedName);;
 
             FloorDataFrame<string> currentFloor = dataHolder.GetField<FloorDataFrame<string>>("currentFloor");
             string variableName = "t";
@@ -182,7 +182,7 @@ namespace FlowRunner.Engine.Tests
         [TestMethod()]
         public void SetValueTest1() {
             frEnvironment environment = new frEnvironment();
-            IChainEnvironmentDataHolder dataHolder = environment.GetField<Dictionary<string, IChainEnvironmentDataHolder>>("dataHolders")[typeof(string).AssemblyQualifiedName];
+            IChainEnvironmentDataHolder dataHolder = environment.GetDataHolder(typeof(string).AssemblyQualifiedName);;
 
             List<FloorDataFrame<string>> floorDataFrames = dataHolder.GetField<List<FloorDataFrame<string>>>("floorDataFrames");
             var currentFloor = new FloorDataFrame<string>();
@@ -204,7 +204,7 @@ namespace FlowRunner.Engine.Tests
         [TestMethod()]
         public void SetValueTest2() {
             frEnvironment environment = new frEnvironment();
-            IChainEnvironmentDataHolder dataHolder = environment.GetField<Dictionary<string, IChainEnvironmentDataHolder>>("dataHolders")[typeof(string).AssemblyQualifiedName];
+            IChainEnvironmentDataHolder dataHolder = environment.GetDataHolder(typeof(string).AssemblyQualifiedName);;
 
             FloorDataFrame<string> currentFloor = dataHolder.GetField<FloorDataFrame<string>>("currentFloor");
             string variableName = "t";
@@ -218,7 +218,7 @@ namespace FlowRunner.Engine.Tests
         [TestMethod()]
         public void SetValueTest3() {
             frEnvironment environment = new frEnvironment();
-            IChainEnvironmentDataHolder dataHolder = environment.GetField<Dictionary<string, IChainEnvironmentDataHolder>>("dataHolders")[typeof(string).AssemblyQualifiedName];
+            IChainEnvironmentDataHolder dataHolder = environment.GetDataHolder(typeof(string).AssemblyQualifiedName);;
 
             List<FloorDataFrame<string>> floorDataFrames = dataHolder.GetField<List<FloorDataFrame<string>>>("floorDataFrames");
             var floorAbove = floorDataFrames[0];
@@ -239,7 +239,7 @@ namespace FlowRunner.Engine.Tests
         [TestMethod()]
         public void SetValueTest4() {
             frEnvironment environment = new frEnvironment();
-            IChainEnvironmentDataHolder dataHolder = environment.GetField<Dictionary<string, IChainEnvironmentDataHolder>>("dataHolders")[typeof(string).AssemblyQualifiedName];
+            IChainEnvironmentDataHolder dataHolder = environment.GetDataHolder(typeof(string).AssemblyQualifiedName);;
 
             List<FloorDataFrame<string>> floorDataFrames = dataHolder.GetField<List<FloorDataFrame<string>>>("floorDataFrames");
             floorDataFrames.Add(new FloorDataFrame<string>());
@@ -268,7 +268,7 @@ namespace FlowRunner.Engine.Tests
         [TestMethod()]
         public void SetValueTest5() {
             frEnvironment upstairEnvironment = new frEnvironment();
-            IChainEnvironmentDataHolder upstairdataHolder = upstairEnvironment.GetField<Dictionary<string, IChainEnvironmentDataHolder>>("dataHolders")[typeof(string).AssemblyQualifiedName];
+            IChainEnvironmentDataHolder upstairdataHolder = upstairEnvironment.GetDataHolder(typeof(string).AssemblyQualifiedName);;
 
             FloorDataFrame<string> currentFloor = upstairdataHolder.GetField<FloorDataFrame<string>>("currentFloor");
             string variableName = "t";
@@ -348,7 +348,7 @@ namespace FlowRunner.Engine.Tests
         [TestMethod()]
         public void CreateOrSetValue_LocalTest() {
             frEnvironment environment = new frEnvironment();
-            IChainEnvironmentDataHolder dataHolder = environment.GetField<Dictionary<string, IChainEnvironmentDataHolder>>("dataHolders")[typeof(string).AssemblyQualifiedName];
+            IChainEnvironmentDataHolder dataHolder = environment.GetDataHolder(typeof(string).AssemblyQualifiedName); ;
 
             FloorDataFrame<string> currentFloor = dataHolder.GetField<FloorDataFrame<string>>("currentFloor");
             string variableName = "t";
@@ -366,7 +366,7 @@ namespace FlowRunner.Engine.Tests
         [TestMethod()]
         public void CreateOrSetValue_LocalTest1() {
             frEnvironment environment = new frEnvironment();
-            IChainEnvironmentDataHolder dataHolder = environment.GetField<Dictionary<string, IChainEnvironmentDataHolder>>("dataHolders")[typeof(string).AssemblyQualifiedName];
+            IChainEnvironmentDataHolder dataHolder = environment.GetDataHolder(typeof(string).AssemblyQualifiedName); ;
 
             List<FloorDataFrame<string>> floorDataFrames = dataHolder.GetField<List<FloorDataFrame<string>>>("floorDataFrames");
             var currentFloor = new FloorDataFrame<string>();
@@ -388,7 +388,7 @@ namespace FlowRunner.Engine.Tests
         [TestMethod()]
         public void CreateOrSetValue_LocalTest2() {
             frEnvironment environment = new frEnvironment();
-            IChainEnvironmentDataHolder dataHolder = environment.GetField<Dictionary<string, IChainEnvironmentDataHolder>>("dataHolders")[typeof(string).AssemblyQualifiedName];
+            IChainEnvironmentDataHolder dataHolder = environment.GetDataHolder(typeof(string).AssemblyQualifiedName);;
 
             FloorDataFrame<string> currentFloor = dataHolder.GetField<FloorDataFrame<string>>("currentFloor");
             string variableName = "t";
@@ -402,7 +402,7 @@ namespace FlowRunner.Engine.Tests
         [TestMethod()]
         public void CreateOrSetValue_LocalTest3() {
             frEnvironment environment = new frEnvironment();
-            IChainEnvironmentDataHolder dataHolder = environment.GetField<Dictionary<string, IChainEnvironmentDataHolder>>("dataHolders")[typeof(string).AssemblyQualifiedName];
+            IChainEnvironmentDataHolder dataHolder = environment.GetDataHolder(typeof(string).AssemblyQualifiedName);;
 
             List<FloorDataFrame<string>> floorDataFrames = dataHolder.GetField<List<FloorDataFrame<string>>>("floorDataFrames");
             var floorAbove = floorDataFrames[0];
@@ -423,7 +423,7 @@ namespace FlowRunner.Engine.Tests
         [TestMethod()]
         public void CreateOrSetValue_LocalTest4() {
             frEnvironment environment = new frEnvironment();
-            IChainEnvironmentDataHolder dataHolder = environment.GetField<Dictionary<string, IChainEnvironmentDataHolder>>("dataHolders")[typeof(string).AssemblyQualifiedName];
+            IChainEnvironmentDataHolder dataHolder = environment.GetDataHolder(typeof(string).AssemblyQualifiedName);;
 
             List<FloorDataFrame<string>> floorDataFrames = dataHolder.GetField<List<FloorDataFrame<string>>>("floorDataFrames");
             floorDataFrames.Add(new FloorDataFrame<string>());
@@ -452,12 +452,12 @@ namespace FlowRunner.Engine.Tests
 
         #endregion
 
-        #region(ExistsValue)
+        #region(Exists)
         //現階層が大域環境の場合
         [TestMethod()]
-        public void ExistsValueTest() {
+        public void ExistsTest() {
             frEnvironment environment = new frEnvironment();
-            IChainEnvironmentDataHolder dataHolder = environment.GetField<Dictionary<string, IChainEnvironmentDataHolder>>("dataHolders")[typeof(string).AssemblyQualifiedName];
+            IChainEnvironmentDataHolder dataHolder = environment.GetDataHolder(typeof(string).AssemblyQualifiedName);;
 
             FloorDataFrame<string> currentFloor = dataHolder.GetField<FloorDataFrame<string>>("currentFloor");
             string variableName_0 = "t_0";
@@ -466,15 +466,15 @@ namespace FlowRunner.Engine.Tests
 
             currentFloor.Variables.Add(variableName_0, value);
 
-            Assert.AreEqual(true, environment.ExistsValue(variableName_0));
-            Assert.AreEqual(false, environment.ExistsValue(variableName_1));
+            Assert.AreEqual(true, environment.Exists(variableName_0));
+            Assert.AreEqual(false, environment.Exists(variableName_1));
         }
 
         //現階層が非大域環境の場合
         [TestMethod()]
-        public void ExistsValueTest1() {
+        public void ExistsTest1() {
             frEnvironment environment = new frEnvironment();
-            IChainEnvironmentDataHolder dataHolder = environment.GetField<Dictionary<string, IChainEnvironmentDataHolder>>("dataHolders")[typeof(string).AssemblyQualifiedName];
+            IChainEnvironmentDataHolder dataHolder = environment.GetDataHolder(typeof(string).AssemblyQualifiedName);;
 
             List<FloorDataFrame<string>> floorDataFrames = dataHolder.GetField<List<FloorDataFrame<string>>>("floorDataFrames");
             var floorAbove = floorDataFrames[0];
@@ -489,8 +489,8 @@ namespace FlowRunner.Engine.Tests
 
             floorAbove.Variables.Add(variableName_0, value);
 
-            Assert.AreEqual(true, environment.ExistsValue(variableName_0));
-            Assert.AreEqual(false, environment.ExistsValue(variableName_1));
+            Assert.AreEqual(true, environment.Exists(variableName_0));
+            Assert.AreEqual(false, environment.Exists(variableName_1));
         }
         #endregion
 
@@ -498,7 +498,7 @@ namespace FlowRunner.Engine.Tests
         [TestMethod()]
         public void DownTest() {
             frEnvironment environment = new frEnvironment();
-            IChainEnvironmentDataHolder dataHolder = environment.GetField<Dictionary<string, IChainEnvironmentDataHolder>>("dataHolders")[typeof(string).AssemblyQualifiedName];
+            IChainEnvironmentDataHolder dataHolder = environment.GetDataHolder(typeof(string).AssemblyQualifiedName);;
 
             FloorDataFrame<string> oldCurrentFloor = dataHolder.GetField<FloorDataFrame<string>>("currentFloor");
             int oldCurrentFloorNo = dataHolder.GetField<int>("currentFloorNo");
@@ -521,7 +521,7 @@ namespace FlowRunner.Engine.Tests
         [TestMethod()]
         public void PullArgumentsTest() {
             frEnvironment environment = new frEnvironment();
-            IChainEnvironmentDataHolder dataHolder = environment.GetField<Dictionary<string, IChainEnvironmentDataHolder>>("dataHolders")[typeof(string).AssemblyQualifiedName];
+            IChainEnvironmentDataHolder dataHolder = environment.GetDataHolder(typeof(string).AssemblyQualifiedName);;
 
             FloorDataFrame<string> oldCurrentFloor = dataHolder.GetField<FloorDataFrame<string>>("currentFloor");
             int oldCurrentFloorNo = dataHolder.GetField<int>("currentFloorNo");
@@ -555,7 +555,7 @@ namespace FlowRunner.Engine.Tests
         [TestMethod()]
         public void UpTest() {
             frEnvironment environment = new frEnvironment();
-            IChainEnvironmentDataHolder dataHolder = environment.GetField<Dictionary<string, IChainEnvironmentDataHolder>>("dataHolders")[typeof(string).AssemblyQualifiedName];
+            IChainEnvironmentDataHolder dataHolder = environment.GetDataHolder(typeof(string).AssemblyQualifiedName);;
 
             FloorDataFrame<string> oldCurrentFloor = dataHolder.GetField<FloorDataFrame<string>>("currentFloor");
             int oldCurrentFloorNo = dataHolder.GetField<int>("currentFloorNo");
