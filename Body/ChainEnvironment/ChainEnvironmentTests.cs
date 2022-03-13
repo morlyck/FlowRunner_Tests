@@ -324,7 +324,7 @@ namespace FlowRunner.Engine.Tests
             //チェン先に変数を追加
             currentFloor.Variables.Add(variableName, oldValue);
 
-            environment.SetValue(variableName, newValue);
+            environment.SetValue<string>(variableName, newValue);
 
             Assert.AreEqual(newValue, currentFloor.Variables[variableName]);
         }
